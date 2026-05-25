@@ -1,0 +1,290 @@
+
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Teknik PT. FAST</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --background: #f8fafc;
+            --sidebar: #0f172a;
+            --sidebar-text: #94a3b8;
+            --sidebar-text-active: #ffffff;
+            --card-bg: #ffffff;
+            --border: #e2e8f0;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 260px;
+            background-color: var(--sidebar);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .sidebar-brand {
+            padding: 24px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .sidebar-brand svg {
+            color: var(--primary);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex-grow: 1;
+        }
+
+        .menu-item a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--sidebar-text);
+            text-decoration: none;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
+        }
+
+        .menu-item a:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--sidebar-text-active);
+        }
+
+        .menu-item.active a {
+            background-color: var(--primary);
+            color: var(--sidebar-text-active);
+        }
+
+        .sidebar-footer {
+            padding: 16px;
+            border-top: 1px solid #1e293b;
+            font-size: 0.825rem;
+            color: var(--sidebar-text);
+            text-align: center;
+            font-weight: 400;
+        }
+
+        /* Main Content Styling */
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Top Header */
+        .top-header {
+            height: 70px;
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            flex-shrink: 0;
+        }
+
+        .header-title h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .header-profile {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .profile-info {
+            text-align: right;
+        }
+
+        .profile-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .profile-role {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .profile-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #e0e7ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        /* Iframe Container */
+        .iframe-container {
+            flex-grow: 1;
+            padding: 24px;
+            background-color: var(--background);
+            position: relative;
+        }
+
+        .iframe-card {
+            width: 100%;
+            height: 100%;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            overflow: hidden;
+            position: relative;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        /* Loading Indicator (Opsional) */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .loading-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--border);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Layout */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+            }
+            .sidebar-brand span, .menu-item span, .sidebar-footer, .profile-info {
+                display: none;
+            }
+            .sidebar-brand {
+                justify-content: center;
+                padding: 20px;
+            }
+            .menu-item a {
+                justify-content: center;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+ 
+        <!-- Iframe Container dengan Efek Modern -->
+        <div class="iframe-container">
+            <div class="iframe-card">
+                <div id="loading" class="loading-overlay">
+                    <div class="spinner"></div>
+                </div>
+                <iframe id="main-frame" src="https://script.google.com/macros/s/AKfycbywEIZSDNgwY6TaW1XYKpgBUaJFQm3gF0vGqhCuYy7IfjhaioPaqe39W3ji15G3AR86gw/exec" title="Content Window" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const iframe = document.getElementById('main-frame');
+        const loading = document.getElementById('loading');
+
+        function changeTab(element, title, url) {
+            // Hapus class active dari semua menu
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Tambah class active pada menu yang dipilih
+            element.classList.add('active');
+            
+            // Perbarui judul halaman
+            document.getElementById('page-title').innerText = title;
+            
+            // Tampilkan animasi loading
+            loading.classList.add('active');
+            
+            // Ganti source/alamat iframe
+            iframe.src = url;
+        }
+
+        // Hilangkan loading overlay saat iframe selesai memuat halaman
+        iframe.addEventListener('load', function() {
+            loading.classList.remove('active');
+        });
+    </script>
+</body>
+</html>
