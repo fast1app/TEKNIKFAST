@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -72,6 +70,10 @@
             flex-grow: 1;
         }
 
+        .menu-item {
+            cursor: pointer;
+        }
+
         .menu-item a {
             display: flex;
             align-items: center;
@@ -85,7 +87,7 @@
             font-size: 0.95rem;
         }
 
-        .menu-item a:hover {
+        .menu-item:hover a {
             background-color: rgba(255, 255, 255, 0.05);
             color: var(--sidebar-text-active);
         }
@@ -189,7 +191,7 @@
             display: block;
         }
 
-        /* Loading Indicator (Opsional) */
+        /* Loading Indicator */
         .loading-overlay {
             position: absolute;
             top: 0;
@@ -220,6 +222,17 @@
             animation: spin 1s linear infinite;
         }
 
+        /* Main Footer Styling */
+        .main-footer {
+            background-color: var(--card-bg);
+            border-top: 1px solid var(--border);
+            padding: 12px 32px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -241,29 +254,39 @@
                 justify-content: center;
                 padding: 12px;
             }
+            .top-header, .main-footer {
+                padding: 0 16px;
+            }
         }
     </style>
 </head>
 <body>
 
- 
-        <!-- Iframe Container dengan Efek Modern -->
+    
+
+    <div class="main-content">
+        
+        
+
         <div class="iframe-container">
             <div class="iframe-card">
                 <div id="loading" class="loading-overlay">
                     <div class="spinner"></div>
                 </div>
-                <iframe id="main-frame" src="https://script.google.com/macros/s/AKfycbyPd-evOShQito7qGSFr6B5RWg8mysT1eyxjPsFWw9ldq-rwF_sXi1xJL46r505snI/exec" title="Content Window" allowfullscreen></iframe>
+                <iframe id="main-frame" src="https://script.google.com/macros/s/AKfycbywEIZSDNgwY6TaW1XYKpgBUaJFQm3gF0vGqhCuYy7IfjhaioPaqe39W3ji15G3AR86gw/exec" title="Content Window" allowfullscreen></iframe>
             </div>
         </div>
+
+        <div class="main-footer">
+            &copy; 2026 PT. FAST by Ikhsan. All rights reserved.
+        </div>
+
     </div>
-	<div>
-	<center>PT.FAST by Ikhsan</center>
-	</div>
 
     <script>
         const iframe = document.getElementById('main-frame');
         const loading = document.getElementById('loading');
+        const pageTitle = document.getElementById('page-title');
 
         function changeTab(element, title, url) {
             // Hapus class active dari semua menu
@@ -274,14 +297,19 @@
             // Tambah class active pada menu yang dipilih
             element.classList.add('active');
             
-            // Perbarui judul halaman
-            document.getElementById('page-title').innerText = title;
+            // Perbarui judul halaman di Header
+            pageTitle.innerText = title;
             
             // Tampilkan animasi loading
             loading.classList.add('active');
             
-            // Ganti source/alamat iframe
-            iframe.src = url;
+            // Ganti source/alamat iframe (hanya jika URL valid dan bukan '#')
+            if(url !== '#') {
+                iframe.src = url;
+            } else {
+                // Simulasi loading selesai jika link kosong
+                setTimeout(() => loading.classList.remove('active'), 500);
+            }
         }
 
         // Hilangkan loading overlay saat iframe selesai memuat halaman
